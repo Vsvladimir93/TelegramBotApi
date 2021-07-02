@@ -12,9 +12,9 @@ import javax.annotation.PostConstruct;
 public class TelegramBotRunner {
 
     Logger logger;
-    TelegramBot bot;
+    RandomMemeTelegramBot bot;
 
-    public TelegramBotRunner(Logger logger, TelegramBot bot) {
+    public TelegramBotRunner(Logger logger, RandomMemeTelegramBot bot) {
         this.logger = logger;
         this.bot = bot;
     }
