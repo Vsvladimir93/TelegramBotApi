@@ -3,10 +3,9 @@ package com.petproject.TelegramBotApi.service.commands.implementations;
 import com.petproject.TelegramBotApi.service.commands.Command;
 import com.petproject.TelegramBotApi.service.commands.CommandResponse;
 
-public class ErrorFallbackCommand implements Command {
-
+public class NoSuchCommand implements Command {
     @Override
     public CommandResponse execute() {
-        return () -> "Something went wrong.";
+        return () -> "No such command.";
     }
 }
