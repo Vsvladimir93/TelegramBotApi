@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS keywords;
+
+CREATE TABLE IF NOT EXISTS keywords (
+	id serial PRIMARY KEY NOT NULL,
+	keyword CHAR(30) NOT NULL UNIQUE
+);

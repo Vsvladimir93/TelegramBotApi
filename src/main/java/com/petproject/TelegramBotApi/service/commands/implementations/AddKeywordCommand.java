@@ -1,6 +1,6 @@
 package com.petproject.TelegramBotApi.service.commands.implementations;
 
-import com.petproject.TelegramBotApi.repository.KeywordMapper;
+import com.petproject.TelegramBotApi.repository.mapper.KeywordMapper;
 import com.petproject.TelegramBotApi.repository.dto.Keyword;
 import com.petproject.TelegramBotApi.service.commands.Command;
 import com.petproject.TelegramBotApi.service.commands.CommandResponse;
