@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface KeywordMapper {
@@ -18,7 +17,7 @@ public interface KeywordMapper {
     @Insert("INSERT INTO Keywords (keyword) VALUES (#{keyword})")
     Integer create(Keyword keyword);
 
-    @Delete("DELETE FROM Keywords WHERE keyword = #{keyword} RETURNING keyword")
-    Optional<String> delete(String keyword);
+    @Delete("DELETE FROM Keywords WHERE keyword = #{keyword}")
+    Integer delete(String keyword);
 
 }

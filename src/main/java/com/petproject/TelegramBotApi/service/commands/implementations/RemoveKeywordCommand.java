@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component("remove_keyword")
 @Scope("prototype")
 public class RemoveKeywordCommand implements Command {
@@ -22,16 +20,17 @@ public class RemoveKeywordCommand implements Command {
 
     @Override
     public CommandResponse execute() {
-
         if (keyword == null || keyword.isBlank()) {
             return () -> "Keyword is empty.";
         }
 
-        Optional<String> deletedKeyword = keywordMapper.delete(keyword);
+        Integer deletedCount = keywordMapper.delete(keyword);
 
-        return () -> deletedKeyword
-                .map(k -> String.format("Keyword <%s> deleted.", k))
-                .orElse(String.format("Cannot delete <%s>", keyword));
+        if (deletedCount > 0) {
+            return () -> String.format("Keyword <%s> deleted.", keyword);
+        }
+
+        return () -> String.format("Has no keyword <%s>", keyword);
     }
 
     @Autowired
