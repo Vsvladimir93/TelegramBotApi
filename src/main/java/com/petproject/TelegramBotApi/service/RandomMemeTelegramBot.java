@@ -1,6 +1,5 @@
 package com.petproject.TelegramBotApi.service;
 
-import com.petproject.TelegramBotApi.service.commands.CommandParser;
 import com.petproject.TelegramBotApi.service.commands.CommandResponse;
 import com.petproject.TelegramBotApi.service.commands.CommandRunner;
 import org.slf4j.Logger;
@@ -14,12 +13,14 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class RandomMemeTelegramBot extends TelegramLongPollingBot {
 
-    Logger logger;
-    Environment env;
+    private final Logger logger;
+    private final Environment env;
+    private final CommandRunner commandRunner;
 
-    public RandomMemeTelegramBot(Logger logger, Environment env) {
+    public RandomMemeTelegramBot(Logger logger, Environment env, CommandRunner commandRunner) {
         this.logger = logger;
         this.env = env;
+        this.commandRunner = commandRunner;
     }
 
     @Override
@@ -41,10 +42,7 @@ public class RandomMemeTelegramBot extends TelegramLongPollingBot {
             return;
         }
 
-        String messageText = update.getMessage().getText();
-
-        CommandRunner runner = new CommandRunner(new CommandParser(messageText));
-        CommandResponse response = runner.execute();
+        CommandResponse response = commandRunner.execute(update.getMessage().getText());
         SendMessage sendMessage = SendMessage
                 .builder()
                 .chatId(String.valueOf(update.getMessage().getChatId()))
