@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -16,11 +15,18 @@ public class RandomMemeTelegramBot extends TelegramLongPollingBot {
     private final Logger logger;
     private final Environment env;
     private final CommandRunner commandRunner;
+    private final SendMessageService sendMessageService;
 
-    public RandomMemeTelegramBot(Logger logger, Environment env, CommandRunner commandRunner) {
+    public RandomMemeTelegramBot(
+            Logger logger,
+            Environment env,
+            CommandRunner commandRunner,
+            SendMessageService sendMessageService
+    ) {
         this.logger = logger;
         this.env = env;
         this.commandRunner = commandRunner;
+        this.sendMessageService = sendMessageService;
     }
 
     @Override
@@ -43,13 +49,9 @@ public class RandomMemeTelegramBot extends TelegramLongPollingBot {
         }
 
         CommandResponse response = commandRunner.execute(update.getMessage().getText());
-        SendMessage sendMessage = SendMessage
-                .builder()
-                .chatId(String.valueOf(update.getMessage().getChatId()))
-                .text(response.getResponseMessage())
-                .build();
+
         try {
-            execute(sendMessage);
+            sendMessageService.send(this, update.getMessage().getChatId(), response.getResponseMessage());
         } catch (TelegramApiException e) {
             logger.error("", e);
         }
