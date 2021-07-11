@@ -5,25 +5,24 @@ import com.petproject.TelegramBotApi.repository.dto.Keyword;
 import com.petproject.TelegramBotApi.service.commands.Command;
 import com.petproject.TelegramBotApi.service.commands.CommandResponse;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.bots.DefaultAbsSender;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component("add_keyword")
-@Scope("prototype")
 public class AddKeywordCommand implements Command {
 
-    private KeywordMapper keywordMapper;
-    private Logger logger;
-    private final String keyword;
+    private final KeywordMapper keywordMapper;
+    private final Logger logger;
 
-    public AddKeywordCommand(String keyword) {
-        this.keyword = keyword;
+    public AddKeywordCommand(KeywordMapper keywordMapper, Logger logger) {
+        this.keywordMapper = keywordMapper;
+        this.logger = logger;
     }
 
     @Override
-    public CommandResponse execute() {
+    public CommandResponse execute(DefaultAbsSender bot, Update update, String keyword) {
         if (keyword == null || keyword.isBlank()) {
             return () -> "Keyword is empty.";
         }
@@ -41,16 +40,6 @@ public class AddKeywordCommand implements Command {
         logger.info(message);
 
         return () -> message;
-    }
-
-    @Autowired
-    public void setKeywordMapper(KeywordMapper keywordMapper) {
-        this.keywordMapper = keywordMapper;
-    }
-
-    @Autowired
-    public void setLogger(Logger logger) {
-        this.logger = logger;
     }
 
 }

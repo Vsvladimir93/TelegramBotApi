@@ -3,23 +3,21 @@ package com.petproject.TelegramBotApi.service.commands.implementations;
 import com.petproject.TelegramBotApi.repository.mapper.KeywordMapper;
 import com.petproject.TelegramBotApi.service.commands.Command;
 import com.petproject.TelegramBotApi.service.commands.CommandResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.bots.DefaultAbsSender;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component("remove_keyword")
-@Scope("prototype")
 public class RemoveKeywordCommand implements Command {
 
-    private KeywordMapper keywordMapper;
-    private final String keyword;
+    private final KeywordMapper keywordMapper;
 
-    public RemoveKeywordCommand(String keyword) {
-        this.keyword = keyword;
+    public RemoveKeywordCommand(KeywordMapper keywordMapper) {
+        this.keywordMapper = keywordMapper;
     }
 
     @Override
-    public CommandResponse execute() {
+    public CommandResponse execute(DefaultAbsSender bot, Update update, String keyword) {
         if (keyword == null || keyword.isBlank()) {
             return () -> "Keyword is empty.";
         }
@@ -33,8 +31,4 @@ public class RemoveKeywordCommand implements Command {
         return () -> String.format("Has no keyword <%s>", keyword);
     }
 
-    @Autowired
-    public void setKeywordMapper(KeywordMapper keywordMapper) {
-        this.keywordMapper = keywordMapper;
-    }
 }

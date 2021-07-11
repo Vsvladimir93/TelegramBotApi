@@ -43,12 +43,7 @@ public class RandomMemeTelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         logger.info("Update {} received. Message: {}", update.getUpdateId(), update.getMessage());
 
-        if (!update.getMessage().hasText()) {
-            logger.warn("Update message has no text.");
-            return;
-        }
-
-        CommandResponse response = commandRunner.execute(update.getMessage().getText());
+        CommandResponse response = commandRunner.execute(this, update);
 
         try {
             sendMessageService.send(this, update.getMessage().getChatId(), response.getResponseMessage());

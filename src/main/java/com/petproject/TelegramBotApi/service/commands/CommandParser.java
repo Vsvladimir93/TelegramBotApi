@@ -5,13 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public final class CommandParser {
 
-    private final CommandTypeResolver commandTypeResolver;
-
-    public CommandParser(CommandTypeResolver commandTypeResolver) {
-        this.commandTypeResolver = commandTypeResolver;
-    }
-
-    public Command parse(String messageText) {
+    public PairedResult parse(String messageText) {
         messageText = messageText.trim();
 
         if (messageText.isBlank())
@@ -31,7 +25,17 @@ public final class CommandParser {
             command = messageText.substring(1);
         }
 
-        return commandTypeResolver.getCommandByString(command, arguments);
+        return new PairedResult(command, arguments);
+    }
+
+    static class PairedResult {
+        public final String command;
+        public final String arguments;
+
+        public PairedResult(String command, String arguments) {
+            this.command = command;
+            this.arguments = arguments;
+        }
     }
 
 }

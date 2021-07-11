@@ -12,13 +12,13 @@ public class CommandTypeResolver {
         this.context = context;
     }
 
-    public Command getCommandByString(String command, String args) {
+    public Command getCommandByString(String command) {
         if (command.isBlank())
             throw new UnknownCommandException(
                     String.format("Command is blank: <%s>", command)
             );
 
-        return (Command) context.getBean(command, args);
+        return (Command) context.getBean(command);
     }
 
 }
