@@ -1,5 +1,6 @@
 package com.petproject.TelegramBotApi.service.commands;
 
+import com.petproject.TelegramBotApi.exceptions.CommandException;
 import com.petproject.TelegramBotApi.service.commands.implementations.ErrorFallbackCommand;
 import com.petproject.TelegramBotApi.service.commands.implementations.NoSuchCommand;
 import org.slf4j.Logger;
@@ -37,7 +38,15 @@ public class CommandRunner {
             command = new ErrorFallbackCommand();
         }
 
-        return command.execute(bot, update, result.arguments);
+        try {
+            return command.execute(bot, update, result.arguments);
+        } catch (CommandException e) {
+            logger.error("CommandException: {}", e.getMessage());
+            return e::getMessage;
+        } catch (Exception e) {
+            logger.error("", e);
+            return () -> "Something went wrong";
+        }
     }
 
 }

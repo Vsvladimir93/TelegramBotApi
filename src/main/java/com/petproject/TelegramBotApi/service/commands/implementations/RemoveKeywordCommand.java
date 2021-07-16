@@ -17,12 +17,17 @@ public class RemoveKeywordCommand implements Command {
     }
 
     @Override
+    public String getDescription() {
+        return "/remove_keyword <keyword> - remove keyword.";
+    }
+
+    @Override
     public CommandResponse execute(DefaultAbsSender bot, Update update, String keyword) {
         if (keyword == null || keyword.isBlank()) {
             return () -> "Keyword is empty.";
         }
 
-        Integer deletedCount = keywordMapper.delete(keyword);
+        Integer deletedCount = keywordMapper.deleteByChatId(update.getMessage().getChatId(), keyword);
 
         if (deletedCount > 0) {
             return () -> String.format("Keyword <%s> deleted.", keyword);

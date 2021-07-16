@@ -45,6 +45,9 @@ public class RandomMemeTelegramBot extends TelegramLongPollingBot {
 
         CommandResponse response = commandRunner.execute(this, update);
 
+        if (!update.hasMessage())
+            return;
+
         try {
             sendMessageService.send(this, update.getMessage().getChatId(), response.getResponseMessage());
         } catch (TelegramApiException e) {

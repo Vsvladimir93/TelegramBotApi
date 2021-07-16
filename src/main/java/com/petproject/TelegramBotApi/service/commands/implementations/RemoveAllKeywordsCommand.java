@@ -7,18 +7,25 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.DefaultAbsSender;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@Component("get_settings")
-public class GetSettingsCommand implements Command {
+@Component("remove_all_keywords")
+public class RemoveAllKeywordsCommand implements Command {
 
     private final KeywordMapper keywordMapper;
 
-    public GetSettingsCommand(KeywordMapper keywordMapper) {
+    public RemoveAllKeywordsCommand(KeywordMapper keywordMapper) {
         this.keywordMapper = keywordMapper;
     }
 
     @Override
-    public CommandResponse execute(DefaultAbsSender bot, Update update, String arguments) {
-        System.out.println(this.keywordMapper.findAll());
-        return () -> "Settings: {...}";
+    public String getDescription() {
+        return "/remove_all_keywords - remove all keyword for current chat.";
     }
+
+    @Override
+    public CommandResponse execute(DefaultAbsSender bot, Update update, String data) {
+        Integer deletedCount = keywordMapper.deleteAllByChatId(update.getMessage().getChatId());
+
+        return () -> String.format("%d - keywords deleted.", deletedCount);
+    }
+
 }

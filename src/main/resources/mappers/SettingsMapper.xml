@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petproject.TelegramBotApi.repository.mapper.SettingsMapper">
+    <select id="getByChatId" resultType="Settings" parameterType="Long">
+        SELECT * FROM settings s WHERE s.chat_id = #{chatId}
+    </select>
+    <insert id="createOrUpdate" parameterType="Settings">
+        INSERT INTO settings (chat_id, cron_time, time_zone) VALUES (#{chatId}, #{cronTime}, #{timeZone})
+        ON CONFLICT (chat_id) DO UPDATE SET cron_time = #{cronTime}, time_zone = #{timeZone}
+    </insert>
+    <delete id="deleteByChatId" parameterType="Long">
+        DELETE FROM settings WHERE chat_id = #{chatID}
+    </delete>
+</mapper>

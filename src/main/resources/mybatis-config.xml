@@ -3,21 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
     <typeAliases>
         <package name="com.petproject.TelegramBotApi.repository.dto"/>
     </typeAliases>
-    <environments default="database">
-        <environment id="postgresql">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="org.postgresql.Driver"/>
-                <property name="url" value="jdbc:postgresql://localhost:54320/telegram_bot_randm"/>
-                <property name="username" value="telegram_bot_randm_sys"/>
-                <property name="password" value="randm_sys_pass"/>
-            </dataSource>
-        </environment>
-    </environments>
     <mappers>
+        <mapper resource="mappers/SubscribedChatsMapper.xml"/>
         <mapper resource="mappers/KeywordMapper.xml"/>
+        <mapper resource="mappers/SettingsMapper.xml"/>
     </mappers>
 </configuration>

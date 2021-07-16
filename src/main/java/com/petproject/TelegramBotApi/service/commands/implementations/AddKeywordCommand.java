@@ -22,6 +22,11 @@ public class AddKeywordCommand implements Command {
     }
 
     @Override
+    public String getDescription() {
+        return "/add_keyword <keyword> - add new keyword for current chat";
+    }
+
+    @Override
     public CommandResponse execute(DefaultAbsSender bot, Update update, String keyword) {
         if (keyword == null || keyword.isBlank()) {
             return () -> "Keyword is empty.";
@@ -29,9 +34,11 @@ public class AddKeywordCommand implements Command {
 
         try {
             Keyword k = new Keyword();
+            k.setChatId(update.getMessage().getChatId());
             k.setKeyword(keyword);
             keywordMapper.create(k);
         } catch (DuplicateKeyException e) {
+            logger.error("", e);
             return () -> "Keyword already exists.";
         }
 
